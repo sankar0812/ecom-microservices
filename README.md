@@ -44,3 +44,41 @@ ecommerce-microservices/
 │   └── notification-service/
 ├── docker-compose.yml
 └── README.md
+
+
+-----------------------------------------------------------------------------------------------
+
+| Event Name        | Publisher         | Subscriber(s)       |
+| ----------------- | ----------------- | ------------------- |
+| `order_created`   | Order Service     | Payment, Inventory  |
+| `payment_success` | Payment Service   | Order, Notification |
+| `payment_failed`  | Payment Service   | Order, Notification |
+| `stock_updated`   | Inventory Service | Order Service       |
+
+
+          +---------------------+
+          |     API Gateway     |
+          +----------+----------+
+                     |
+       +-------------+-------------+
+       |                           |
++------+--------+          +-------+------+
+|  User Service  |          | Product Service |
++------+--------+          +-------+------+
+       |                           |
+       |                           |
++------+--------+          +-------+------+
+|  Order Service |          | Cart Service |
++------+--------+          +-------+------+
+       |
+       v
++----------------+
+| Payment Service|
++----------------+
+       |
+       v
+    Kafka Topics
+       |
++------+--------+          +-----------------+
+| Inventory Svc |          | Notification Svc |
++---------------+          +-----------------+
